@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>📡 بث مباشر - قناة القرآن الكريم</title>
+  <style>
+    body {
+      background-color: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+    }
+    h1 {
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    video {
+      width: 80%;
+      max-width: 800px;
+      height: 450px;
+      background: #000;
+      border: 4px solid #1db954;
+      border-radius: 12px;
+    }
+    #loading {
+      color: #ddd;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📡 بث مباشر - قناة القرآن الكريم</h1>
+  <div id="loading">🔄 جاري تحميل البث المباشر... الرجاء الانتظار</div>
+  <video id="video" controls autoplay poster="">الرجاءالانتظار </video>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <script>
+    const video = document.getElementById('video');
+    const videoSrc = 'https://win.holol.com/live/quran/playlist.m3u8';
+    const loadingText = document.getElementById('loading');
+
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(videoSrc);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, function () {
+        loadingText.style.display = 'none';
+        video.play();
+      });
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = videoSrc;
+      video.addEventListener('loadedmetadata', function () {
+        loadingText.style.display = 'none';
+        video.play();
+      });
+    } else {
+      loadingText.textContent = '❌ المتصفح لا يدعم تشغيل هذا النوع من البث المباشر.';
+    }
+  </script>
+
+</body>
+</html>

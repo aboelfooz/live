@@ -38,10 +38,15 @@
   <h1>📡 بث مباشر - قناة القرآن الكريم</h1>
   <div id="loading">🔄 جاري تحميل البث المباشر... الرجاء الانتظار</div>
   <video id="video" controls autoplay poster="">الرجاءالانتظار </video>
+   <video id="videoo" controls autoplay poster="">الرجاءالانتظار </video>
 
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script>
     const video = document.getElementById('video');
+    const videoSrc = '"https://win.holol.com/live/quran/playlist.m3u8';
+    const loadingText = document.getElementById('loading');
+
+     const video = document.getElementById('videoo');
     const videoSrc = '"https://win.holol.com/live/quran/playlist.m3u8';
     const loadingText = document.getElementById('loading');
 

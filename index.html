@@ -2,69 +2,73 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>📡 بث مباشر - قناة القرآن الكريم</title>
+  <title>البث المباشر - القرآن الكريم والسنة النبوية</title>
+  <link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet" />
+  <script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>
   <style>
     body {
-      background-color: #111;
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f8fb;
+      color: #333;
+      direction: rtl;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #2c3e50;
+    }
+
+    .channel-container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      font-family: 'Arial', sans-serif;
+      gap: 40px;
     }
-    h1 {
-      color: #fff;
-      margin-bottom: 20px;
+
+    .video-block {
+      background-color: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 700px;
+      max-width: 95%;
     }
+
+    h2 {
+      margin-bottom: 10px;
+      color: #2980b9;
+    }
+
     video {
-      width: 80%;
-      max-width: 800px;
-      height: 450px;
-      background: #000;
-      border: 4px solid #1db954;
       border-radius: 12px;
-    }
-    #loading {
-      color: #ddd;
-      margin-bottom: 15px;
-      font-size: 18px;
     }
   </style>
 </head>
 <body>
 
-  <h1>📡 بث مباشر - قناة القرآن الكريم</h1>
-  <div id="loading">🔄 جاري تحميل البث المباشر... الرجاء الانتظار</div>
-  <video id="video" controls autoplay poster="">الرجاءالانتظار </video>
-   <video id="videoo" controls autoplay poster="">الرجاءالانتظار </video>
+  <h1>البث المباشر - قناة القرآن والسنة</h1>
 
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-  <script>
-    const video = document.getElementById('video');
-    const videoSrc = '"https://win.holol.com/live/quran/playlist.m3u8';
-    const loadingText = document.getElementById('loading');
+  <div class="channel-container">
 
-   
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(videoSrc);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, function () {
-        loadingText.style.display = 'none';
-        video.play();
-      });
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = videoSrc;
-      video.addEventListener('loadedmetadata', function () {
-        loadingText.style.display = 'none';
-        video.play();
-      });
-    } else {
-      loadingText.textContent = '❌ المتصفح لا يدعم تشغيل هذا النوع من البث المباشر.';
-    }
-  </script>
+    <div class="video-block">
+      <h2>قناة القرآن الكريم</h2>
+      <video id="quran-channel" class="video-js vjs-default-skin" controls autoplay width="640" height="360" data-setup='{}'>
+        <source src="https://win.holol.com/live/quran/playlist.m3u8" type="application/x-mpegURL" />
+        متصفحك لا يدعم تشغيل الفيديو.
+      </video>
+    </div>
+
+    <div class="video-block">
+      <h2>قناة السنة النبوية</h2>
+      <video id="sunnah-channel" class="video-js vjs-default-skin" controls autoplay width="640" height="360" data-setup='{}'>
+        <source src="https://win.holol.com/live/sunnah/playlist.m3u8" type="application/x-mpegURL" />
+        متصفحك لا يدعم تشغيل الفيديو.
+      </video>
+    </div>
+
+  </div>
 
 </body>
 </html>

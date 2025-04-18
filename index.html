@@ -1,33 +1,105 @@
-<!DOCTYPE html>
-<html lang="ar">
+<!DOCTYPE html><html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>البث المباشر</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>البث المباشر - القرآن والسنة</title>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <style>
+    body {
+      font-family: 'Tahoma', sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      direction: rtl;
+    }
+    header {
+      background-color: #1e3a8a;
+      color: white;
+      padding: 20px 10px;
+      font-size: 24px;
+    }
+    .container {
+      margin: 30px auto;
+      max-width: 700px;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      padding: 20px;
+      width: 90%;
+    }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .buttons button {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      margin: 5px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      flex: 1 1 45%;
+      max-width: 200px;
+    }
+    .buttons button:hover {
+      background-color: #1e40af;
+    }
+    video {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+    footer {
+      margin-top: 40px;
+      padding: 10px;
+      font-size: 14px;
+      color: #6b7280;
+    }
+    @media (max-width: 480px) {
+      header {
+        font-size: 20px;
+        padding: 15px;
+      }
+      .buttons button {
+        font-size: 14px;
+        padding: 10px;
+      }
+    }
+  </style>
 </head>
-<body>
+<body><header>البث المباشر - قناة القرآن والسنة</header><div class="container">
+  <div class="buttons">
+    <button onclick="changeStream('https://win.holol.com/live/quran/playlist.m3u8')">قناة القرآن الكريم</button>
+    <button onclick="changeStream('https://win.holol.com/live/sunnah/playlist.m3u8')">قناة السنة النبوية</button>
+  </div>
+  <video id="player" controls></video>
+</div><footer>
+  تطوير بواسطة محب للقرآن والسنة
+</footer><script>
+  const player = document.getElementById('player');
+  let hls;
 
-<h2>قناة القرآن الكريم</h2>
-<video id="quran" controls width="640" height="360"></video>
+  function changeStream(url) {
+    if (hls) {
+      hls.destroy();
+    }
 
-<h2>قناة السنة النبوية</h2>
-<video id="sunnah" controls width="640" height="360"></video>
-
-<script>
-  function setupPlayer(videoId, streamUrl) {
-    const video = document.getElementById(videoId);
     if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(streamUrl);
-      hls.attachMedia(video);
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = streamUrl;
+      hls = new Hls();
+      hls.loadSource(url);
+      hls.attachMedia(player);
+    } else if (player.canPlayType('application/vnd.apple.mpegurl')) {
+      player.src = url;
     }
   }
 
-  setupPlayer('quran', 'https://win.holol.com/live/quran/playlist.m3u8');
-  setupPlayer('sunnah', 'https://win.holol.com/live/sunnah/playlist.m3u8');
-</script>
-
-</body>
+  // بدء التشغيل على قناة القرآن
+  changeStream('https://win.holol.com/live/quran/playlist.m3u8');
+</script></body>
 </html>

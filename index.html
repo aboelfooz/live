@@ -2,87 +2,15 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>البث المباشر - القرآن الكريم والسنة النبوية</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet" />
-  <script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background-color: #f4f8fb;
-      color: #333;
-      direction: rtl;
-      text-align: center;
-      padding: 20px;
-    }
-
-    h1 {
-      margin-bottom: 20px;
-      color: #2c3e50;
-      font-size: 20px;
-    }
-
-    .channel-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 30px;
-    }
-
-    .video-block {
-      background-color: #fff;
-      border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      padding: 15px;
-      width: 100%;
-      max-width: 100%;
-    }
-
-    h2 {
-      margin-bottom: 10px;
-      color: #2980b9;
-      font-size: 18px;
-    }
-
-    video {
-      border-radius: 12px;
-      width: 100%;
-      height: auto;
-      max-height: 300px;
-      object-fit: cover;
-    }
-
-    /* إخفاء الموقع على الشاشات الكبيرة */
-    @media (min-width: 768px) {
-      body {
-        display: none;
-      }
-    }
-  </style>
+  <title>البث المباشر بدون JavaScript</title>
 </head>
 <body>
 
-  <h1>البث المباشر - قناة القرآن والسنة</h1>
+<h2>قناة القرآن الكريم</h2>
+<video controls width="640" height="360" src="https://win.holol.com/live/quran/playlist.m3u8"></video>
 
-  <div class="channel-container">
-
-    <div class="video-block">
-      <h2>قناة القرآن الكريم</h2>
-      <video id="quran-channel" class="video-js vjs-default-skin" controls autoplay muted playsinline webkit-playsinline data-setup='{}'>
-        <source src="https://win.holol.com/live/quran/playlist.m3u8" type="application/x-mpegURL" />
-        متصفحك لا يدعم تشغيل الفيديو.
-      </video>
-    </div>
-
-    <div class="video-block">
-      <h2>قناة السنة النبوية</h2>
-      <video id="sunnah-channel" class="video-js vjs-default-skin" controls autoplay muted playsinline webkit-playsinline data-setup='{}'>
-        <source src="https://win.holol.com/live/sunnah/playlist.m3u8" type="application/x-mpegURL" />
-        متصفحك لا يدعم تشغيل الفيديو.
-      </video>
-    </div>
-
-  </div>
+<h2>قناة السنة النبوية</h2>
+<video controls width="640" height="360" src="https://win.holol.com/live/sunnah/playlist.m3u8"></video>
 
 </body>
 </html>

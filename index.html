@@ -2,15 +2,32 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>البث المباشر بدون JavaScript</title>
+  <title>البث المباشر</title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
 
 <h2>قناة القرآن الكريم</h2>
-<video controls width="640" height="360" src="https://win.holol.com/live/quran/playlist.m3u8"></video>
+<video id="quran" controls width="640" height="360"></video>
 
 <h2>قناة السنة النبوية</h2>
-<video controls width="640" height="360" src="https://win.holol.com/live/sunnah/playlist.m3u8"></video>
+<video id="sunnah" controls width="640" height="360"></video>
+
+<script>
+  function setupPlayer(videoId, streamUrl) {
+    const video = document.getElementById(videoId);
+    if (Hls.isSupported()) {
+      const hls = new Hls();
+      hls.loadSource(streamUrl);
+      hls.attachMedia(video);
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = streamUrl;
+    }
+  }
+
+  setupPlayer('quran', 'https://win.holol.com/live/quran/playlist.m3u8');
+  setupPlayer('sunnah', 'https://win.holol.com/live/sunnah/playlist.m3u8');
+</script>
 
 </body>
 </html>

@@ -1,85 +1,159 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="بث مباشر لقنوات القرآن الكريم والسنة النبوية وقناة إقرأ">
   <title>البث المباشر - القرآن والسنة</title>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <style>
+    :root {
+      --primary-color: #1e3a8a;
+      --secondary-color: #2563eb;
+      --dark-color: #1e40af;
+      --text-color: #333;
+      --light-color: #f3f4f6;
+      --border-color: #ddd;
+      --shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+    
     body {
-      font-family: 'Tahoma', sans-serif;
-      background: #f3f4f6;
+      font-family: 'Tahoma', Arial, sans-serif;
+      background: var(--light-color);
       margin: 0;
       padding: 0;
       text-align: center;
-      direction: rtl;
+      color: var(--text-color);
+      line-height: 1.6;
     }
+    
     header {
-      background-color: #1e3a8a;
+      background-color: var(--primary-color);
       color: white;
-      padding: 18px 10px;
-      font-size: 22px;
+      padding: 1rem;
+      font-size: 1.4rem;
       font-weight: bold;
+      box-shadow: var(--shadow);
     }
+    
     .container {
-      margin: 25px auto;
-      max-width: 600px;
+      margin: 1.5rem auto;
+      max-width: 800px;
       background: white;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+      box-shadow: var(--shadow);
       border-radius: 14px;
-      padding: 18px;
+      padding: 1.2rem;
       width: 94%;
     }
+    
     .buttons {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 10px;
-      margin-bottom: 20px;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
     }
+    
     .buttons button {
-      background-color: #2563eb;
+      background-color: var(--secondary-color);
       color: white;
       border: none;
-      padding: 12px 18px;
+      padding: 0.8rem 1.2rem;
       border-radius: 10px;
       cursor: pointer;
-      font-size: 15px;
-      transition: background-color 0.3s, transform 0.2s;
-      flex: 1 1 80%;
-      max-width: 250px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      flex: 1 1 45%;
+      max-width: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
     }
+    
     .buttons button:hover {
-      background-color: #1e40af;
-      transform: scale(1.03);
+      background-color: var(--dark-color);
+      transform: translateY(-2px);
     }
+    
+    .buttons button.active {
+      background-color: var(--dark-color);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    
     #loading {
-      font-size: 18px;
-      color: #374151;
-      margin-bottom: 10px;
+      font-size: 1.1rem;
+      color: var(--text-color);
+      margin: 1rem 0;
       display: none;
     }
-    video {
+    
+    .video-container {
+      position: relative;
       width: 100%;
-      height: auto;
-      border-radius: 10px;
-      border: 1px solid #ccc;
+      padding-top: 56.25%; /* 16:9 Aspect Ratio */
       background-color: #000;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1rem;
     }
+    
+    video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    
+    .channel-info {
+      background-color: #f8f9fa;
+      padding: 0.8rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      border: 1px solid var(--border-color);
+    }
+    
     footer {
-      margin-top: 30px;
-      padding: 10px;
-      font-size: 13px;
+      margin-top: 2rem;
+      padding: 1rem;
+      font-size: 0.85rem;
       color: #6b7280;
     }
-    @media (max-width: 480px) {
-      header {
-        font-size: 20px;
-        padding: 14px;
-      }
+    
+    .error-message {
+      color: #dc2626;
+      background-color: #fee2e2;
+      padding: 0.8rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      display: none;
+    }
+    
+    @media (max-width: 768px) {
       .buttons button {
-        font-size: 14px;
-        padding: 10px;
+        flex: 1 1 100%;
+      }
+      
+      header {
+        font-size: 1.2rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 0.8rem;
+      }
+      
+      .buttons button {
+        font-size: 0.9rem;
+        padding: 0.7rem;
       }
     }
   </style>
@@ -89,57 +163,161 @@
 
   <div class="container">
     <div class="buttons">
-      <button onclick="changeStream('https://win.holol.com/live/quran/playlist.m3u8')">📖 قناة القرآن الكريم</button>
-      <button onclick="changeStream('https://win.holol.com/live/sunnah/playlist.m3u8')">🌙 قناة السنة النبوية</button>
-      <button onclick="changeStream('https://playlist.fasttvcdn.com/pl/dlkqw1ftuvuuzkcb4pxdcg/Iqraafasttv3/playlist.m3u8')">📺 قناة إقرأ</button>
+      <button onclick="changeStream('quran', 'https://win.holol.com/live/quran/playlist.m3u8')">
+        <span>📖</span> قناة القرآن الكريم
+      </button>
+      <button onclick="changeStream('sunnah', 'https://win.holol.com/live/sunnah/playlist.m3u8')">
+        <span>🌙</span> قناة السنة النبوية
+      </button>
+      <button onclick="changeStream('iqraa', 'https://playlist.fasttvcdn.com/pl/dlkqw1ftuvuuzkcb4pxdcg/Iqraafasttv3/playlist.m3u8')">
+        <span>📺</span> قناة إقرأ
+      </button>
     </div>
 
-    <div id="loading">📺 جاري التحميل...</div>
-    <video id="player" controls playsinline></video>
+    <div id="loading">📺 جاري تحميل البث المباشر، الرجاء الانتظار...</div>
+    <div id="error" class="error-message"></div>
+    
+    <div class="video-container">
+      <video id="player" controls playsinline></video>
+    </div>
+    
+    <div id="channel-info" class="channel-info">
+      <div id="current-channel">القناة الحالية: القرآن الكريم</div>
+      <div id="stream-status">حالة البث: جاري التحميل...</div>
+    </div>
   </div>
 
-  <footer>تطوير بواسطة محب للقرآن والسنة 💚</footer>
+  <footer>تطوير بواسطة محب للقرآن والسنة 💚 | جميع الحقوق محفوظة &copy; <span id="year"></span></footer>
 
   <script>
     const player = document.getElementById('player');
     const loading = document.getElementById('loading');
+    const errorEl = document.getElementById('error');
+    const currentChannelEl = document.getElementById('current-channel');
+    const streamStatusEl = document.getElementById('stream-status');
+    const buttons = document.querySelectorAll('.buttons button');
     let hls;
-
-    function changeStream(url) {
+    let currentStream = 'quran';
+    
+    // تحديث سنة حقوق النشر
+    document.getElementById('year').textContent = new Date().getFullYear();
+    
+    // دالة تغيير القناة
+    function changeStream(channel, url) {
+      // إعادة تعيين حالة الخطأ
+      errorEl.style.display = 'none';
+      
+      // تحديث زر القناة النشطة
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      
       // عرض رسالة التحميل
       loading.style.display = 'block';
       player.style.display = 'none';
-
+      currentStream = channel;
+      
+      // تحديث معلومات القناة
+      updateChannelInfo(channel);
+      streamStatusEl.textContent = 'حالة البث: جاري التحميل...';
+      
+      // تدمير مشغل HLS السابق إذا كان موجودًا
       if (hls) {
         hls.destroy();
       }
-
+      
+      // التحقق من دعم المتصفح لتقنية HLS
       if (Hls.isSupported()) {
-        hls = new Hls();
+        hls = new Hls({
+          maxBufferLength: 30,
+          maxMaxBufferLength: 600,
+          maxBufferSize: 60 * 1000 * 1000,
+          maxBufferHole: 0.5,
+        });
+        
         hls.loadSource(url);
         hls.attachMedia(player);
-
-        hls.on(Hls.Events.MANIFEST_PARSED, function () {
-          player.play();
+        
+        // أحداث المشغل
+        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+          player.play().catch(e => {
+            showError('تعذر تشغيل الفيديو تلقائياً. الرجاء الضغط على زر التشغيل.');
+          });
         });
-
-        hls.on(Hls.Events.FRAG_LOADED, function () {
+        
+        hls.on(Hls.Events.FRAG_LOADED, function() {
           loading.style.display = 'none';
           player.style.display = 'block';
+          streamStatusEl.textContent = 'حالة البث: يعمل بشكل طبيعي';
         });
-
+        
+        hls.on(Hls.Events.ERROR, function(event, data) {
+          if (data.fatal) {
+            switch(data.type) {
+              case Hls.ErrorTypes.NETWORK_ERROR:
+                showError('خطأ في الشبكة. الرجاء التحقق من اتصال الإنترنت.');
+                break;
+              case Hls.ErrorTypes.MEDIA_ERROR:
+                showError('خطأ في تشغيل الوسائط. جاري محاولة الإصلاح...');
+                hls.recoverMediaError();
+                break;
+              default:
+                showError('حدث خطأ غير متوقع. الرجاء تحديث الصفحة أو تجربة قناة أخرى.');
+                break;
+            }
+          }
+        });
+        
       } else if (player.canPlayType('application/vnd.apple.mpegurl')) {
+        // دعم المتصفحات التي تعتمد على مشغل HLS المدمج (مثل Safari على iOS)
         player.src = url;
-        player.addEventListener('loadedmetadata', function () {
+        player.addEventListener('loadedmetadata', function() {
           loading.style.display = 'none';
           player.style.display = 'block';
-          player.play();
+          player.play().catch(e => {
+            showError('تعذر تشغيل الفيديو تلقائياً. الرجاء الضغط على زر التشغيل.');
+          });
+          streamStatusEl.textContent = 'حالة البث: يعمل بشكل طبيعي';
         });
+        
+        player.addEventListener('error', function() {
+          showError('حدث خطأ في تشغيل الفيديو. الرجاء تجربة قناة أخرى.');
+        });
+      } else {
+        showError('المتصفح لا يدعم تشغيل هذا النوع من البث المباشر.');
       }
     }
-
+    
+    // دالة تحديث معلومات القناة
+    function updateChannelInfo(channel) {
+      const channels = {
+        'quran': 'القرآن الكريم',
+        'sunnah': 'السنة النبوية',
+        'iqraa': 'إقرأ'
+      };
+      currentChannelEl.textContent = `القناة الحالية: ${channels[channel]}`;
+    }
+    
+    // دالة عرض رسالة الخطأ
+    function showError(message) {
+      errorEl.textContent = message;
+      errorEl.style.display = 'block';
+      loading.style.display = 'none';
+      streamStatusEl.textContent = 'حالة البث: متوقف';
+    }
+    
     // تشغيل قناة القرآن تلقائيًا عند الدخول
-    changeStream('https://win.holol.com/live/quran/playlist.m3u8');
+    window.addEventListener('DOMContentLoaded', function() {
+      changeStream('quran', 'https://win.holol.com/live/quran/playlist.m3u8');
+      buttons[0].classList.add('active');
+    });
+    
+    // إدارة وضع ملء الشاشة عند تغيير حجم النافذة
+    window.addEventListener('resize', function() {
+      if (document.fullscreenElement) {
+        player.style.width = '100%';
+        player.style.height = '100%';
+      }
+    });
   </script>
 </body>
 </html>

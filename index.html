@@ -1,7 +1,8 @@
-<!DOCTYPE html><html lang="ar">
+<!DOCTYPE html>
+<html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>البث المباشر - القرآن والسنة</title>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <style>
@@ -17,89 +18,103 @@
       background-color: #1e3a8a;
       color: white;
       padding: 20px 10px;
-      font-size: 24px;
+      font-size: 26px;
+      font-weight: bold;
+      letter-spacing: 1px;
     }
     .container {
       margin: 30px auto;
-      max-width: 700px;
+      max-width: 750px;
       background: white;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      border-radius: 12px;
-      padding: 20px;
-      width: 90%;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border-radius: 16px;
+      padding: 25px;
+      width: 92%;
     }
     .buttons {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      margin-bottom: 20px;
+      gap: 10px;
+      margin-bottom: 25px;
     }
     .buttons button {
       background-color: #2563eb;
       color: white;
       border: none;
-      padding: 10px 16px;
-      margin: 5px;
-      border-radius: 8px;
+      padding: 12px 18px;
+      border-radius: 10px;
       cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.3s;
+      font-size: 17px;
+      transition: background-color 0.3s, transform 0.2s;
       flex: 1 1 45%;
-      max-width: 200px;
+      max-width: 220px;
     }
     .buttons button:hover {
       background-color: #1e40af;
+      transform: scale(1.03);
     }
     video {
       width: 100%;
       height: auto;
-      border-radius: 10px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
     }
     footer {
       margin-top: 40px;
-      padding: 10px;
+      padding: 12px;
       font-size: 14px;
       color: #6b7280;
     }
     @media (max-width: 480px) {
       header {
-        font-size: 20px;
+        font-size: 22px;
         padding: 15px;
       }
       .buttons button {
-        font-size: 14px;
+        font-size: 15px;
         padding: 10px;
       }
     }
   </style>
 </head>
-<body><header>البث المباشر - قناة القرآن والسنة</header><div class="container">
-  <div class="buttons">
-    <button onclick="changeStream('https://win.holol.com/live/quran/playlist.m3u8')">قناة القرآن الكريم</button>
-    <button onclick="changeStream('https://win.holol.com/live/sunnah/playlist.m3u8')">قناة السنة النبوية</button>
+<body>
+  <header>📡 البث المباشر - قناة القرآن والسنة</header>
+
+  <div class="container">
+    <div class="buttons">
+      <button onclick="changeStream('https://win.holol.com/live/quran/playlist.m3u8')">📖 قناة القرآن الكريم</button>
+      <button onclick="changeStream('https://win.holol.com/live/sunnah/playlist.m3u8')">🌙 قناة السنة النبوية</button>
+      <button onclick="changeStream('https://playlist.fasttvcdn.com/pl/dlkqw1ftuvuuzkcb4pxdcg/Iqraafasttv3/playlist.m3u8')">📺 قناة إقرأ</button>
+    </div>
+
+    <video id="player" controls poster="https://i.imgur.com/fUo8gL1.jpg"></video>
   </div>
-  <video id="player" controls></video>
-</div><footer>
-  تطوير بواسطة محب للقرآن والسنة
-</footer><script>
-  const player = document.getElementById('player');
-  let hls;
 
-  function changeStream(url) {
-    if (hls) {
-      hls.destroy();
+  <footer>تطوير بواسطة محب للقرآن والسنة 💚</footer>
+
+  <script>
+    const player = document.getElementById('player');
+    let hls;
+
+    function changeStream(url) {
+      if (hls) {
+        hls.destroy();
+      }
+
+      if (Hls.isSupported()) {
+        hls = new Hls();
+        hls.loadSource(url);
+        hls.attachMedia(player);
+      } else if (player.canPlayType('application/vnd.apple.mpegurl')) {
+        player.src = url;
+      }
+
+      player.play();
     }
 
-    if (Hls.isSupported()) {
-      hls = new Hls();
-      hls.loadSource(url);
-      hls.attachMedia(player);
-    } else if (player.canPlayType('application/vnd.apple.mpegurl')) {
-      player.src = url;
-    }
-  }
-
-  // بدء التشغيل على قناة القرآن
-  changeStream('https://win.holol.com/live/quran/playlist.m3u8');
-</script></body>
+    // التشغيل التلقائي على قناة القرآن
+    changeStream('https://win.holol.com/live/quran/playlist.m3u8');
+  </script>
+</body>
 </html>

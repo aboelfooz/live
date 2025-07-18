@@ -17,26 +17,25 @@
     header {
       background-color: #1e3a8a;
       color: white;
-      padding: 20px 10px;
-      font-size: 26px;
+      padding: 18px 10px;
+      font-size: 22px;
       font-weight: bold;
-      letter-spacing: 1px;
     }
     .container {
-      margin: 30px auto;
-      max-width: 750px;
+      margin: 25px auto;
+      max-width: 600px;
       background: white;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      border-radius: 16px;
-      padding: 25px;
-      width: 92%;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+      border-radius: 14px;
+      padding: 18px;
+      width: 94%;
     }
     .buttons {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 10px;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
     .buttons button {
       background-color: #2563eb;
@@ -45,34 +44,41 @@
       padding: 12px 18px;
       border-radius: 10px;
       cursor: pointer;
-      font-size: 17px;
+      font-size: 15px;
       transition: background-color 0.3s, transform 0.2s;
-      flex: 1 1 45%;
-      max-width: 220px;
+      flex: 1 1 80%;
+      max-width: 250px;
     }
     .buttons button:hover {
       background-color: #1e40af;
       transform: scale(1.03);
     }
+    #loading {
+      font-size: 18px;
+      color: #374151;
+      margin-bottom: 10px;
+      display: none;
+    }
     video {
       width: 100%;
       height: auto;
-      border-radius: 12px;
+      border-radius: 10px;
       border: 1px solid #ccc;
+      background-color: #000;
     }
     footer {
-      margin-top: 40px;
-      padding: 12px;
-      font-size: 14px;
+      margin-top: 30px;
+      padding: 10px;
+      font-size: 13px;
       color: #6b7280;
     }
     @media (max-width: 480px) {
       header {
-        font-size: 22px;
-        padding: 15px;
+        font-size: 20px;
+        padding: 14px;
       }
       .buttons button {
-        font-size: 15px;
+        font-size: 14px;
         padding: 10px;
       }
     }
@@ -88,16 +94,22 @@
       <button onclick="changeStream('https://playlist.fasttvcdn.com/pl/dlkqw1ftuvuuzkcb4pxdcg/Iqraafasttv3/playlist.m3u8')">📺 قناة إقرأ</button>
     </div>
 
-    <video id="player" controls poster="https://i.imgur.com/fUo8gL1.jpg"></video>
+    <div id="loading">📺 جاري التحميل...</div>
+    <video id="player" controls playsinline></video>
   </div>
 
   <footer>تطوير بواسطة محب للقرآن والسنة 💚</footer>
 
   <script>
     const player = document.getElementById('player');
+    const loading = document.getElementById('loading');
     let hls;
 
     function changeStream(url) {
+      // عرض رسالة التحميل
+      loading.style.display = 'block';
+      player.style.display = 'none';
+
       if (hls) {
         hls.destroy();
       }
@@ -106,14 +118,27 @@
         hls = new Hls();
         hls.loadSource(url);
         hls.attachMedia(player);
+
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+          player.play();
+        });
+
+        hls.on(Hls.Events.FRAG_LOADED, function () {
+          loading.style.display = 'none';
+          player.style.display = 'block';
+        });
+
       } else if (player.canPlayType('application/vnd.apple.mpegurl')) {
         player.src = url;
+        player.addEventListener('loadedmetadata', function () {
+          loading.style.display = 'none';
+          player.style.display = 'block';
+          player.play();
+        });
       }
-
-      player.play();
     }
 
-    // التشغيل التلقائي على قناة القرآن
+    // تشغيل قناة القرآن تلقائيًا عند الدخول
     changeStream('https://win.holol.com/live/quran/playlist.m3u8');
   </script>
 </body>
